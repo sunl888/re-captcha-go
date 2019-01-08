@@ -16,7 +16,6 @@ const (
 )
 
 type reCaptcha struct {
-	Sitekey   string // Use this in the HTML code your site serves to users.
 	SecretKey string // Use this for communication between your server and Google.
 }
 
@@ -76,9 +75,8 @@ func (r *reCaptcha) Verify(request *http.Request) (bool, error) {
 	return unmarshalResp.Success, nil
 }
 
-func NewReCaptcha(siteKey, secretKey string) *reCaptcha {
+func NewReCaptcha(secretKey string) *reCaptcha {
 	return &reCaptcha{
-		Sitekey:   siteKey,
 		SecretKey: secretKey,
 	}
 }

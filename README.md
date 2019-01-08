@@ -26,7 +26,7 @@ var (
 )
 
 func verifyHandler(w http.ResponseWriter, r *http.Request) {
-	reCaptcha := recaptcha.NewReCaptcha(sitekey, secretKey)
+	reCaptcha := recaptcha.NewReCaptcha(secretKey)
 	isOk, err := reCaptcha.Verify(r)
 	if err != nil {
 		_, _ = w.Write([]byte(err.Error()))

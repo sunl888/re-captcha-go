@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	sitekey   = "6LfR8YcUAAAAAK-QLovv4b8X40J-1oee_AtoNNSS"
-	secretKey = "6LfR8YcUAAAAAOpQkKTJhFdq6eEZJhkFN0hxNoGQ"
+	sitekey   = "6LfR8YcUAAAAAK-QLovv4b8X40J-1oee_AtoNNSS" // Use this in the HTML code your site serves to users.
+	secretKey = "6LfR8YcUAAAAAOpQkKTJhFdq6eEZJhkFN0hxNoGQ" // Use this for communication between your server and Google.
 )
 
 func showHandler(w http.ResponseWriter, r *http.Request) {
@@ -57,7 +57,7 @@ func showHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func verifyHandler(w http.ResponseWriter, r *http.Request) {
-	reCaptcha := re_captcha_go.NewReCaptcha(sitekey, secretKey)
+	reCaptcha := re_captcha_go.NewReCaptcha(secretKey)
 	isOk, err := reCaptcha.Verify(r)
 	if err != nil {
 		_, _ = w.Write([]byte(err.Error()))
