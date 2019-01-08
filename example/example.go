@@ -11,7 +11,7 @@ import (
 
 var (
 	sitekey   = "6LfR8YcUAAAAAK-QLovv4b8X40J-1oee_AtoNNSS"
-	secretKey = "6LfR8YcUAAAAAOpQkKTJhFdq6eEZJhkFN0hxNoGQ1"
+	secretKey = "6LfR8YcUAAAAAOpQkKTJhFdq6eEZJhkFN0hxNoGQ"
 )
 
 func showHandler(w http.ResponseWriter, r *http.Request) {
