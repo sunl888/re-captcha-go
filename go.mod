@@ -1,1 +1,1 @@
-module github.com/wq1019/captcha
+module github.com/wq1019/re-captcha-go

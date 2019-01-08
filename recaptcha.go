@@ -1,9 +1,9 @@
-package captcha
+package re_captcha_go
 
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/wq1019/captcha/errors"
+	"github.com/wq1019/re-captcha-go/errors"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -37,7 +37,6 @@ func (r *reCaptcha) Verify(request *http.Request) (bool, error) {
 		err           error
 		verifyRespVal = request.FormValue(VerifyRespKey)
 	)
-	fmt.Println(verifyRespVal)
 	// 判断前端有没有传 VerifyRespKey
 	if verifyRespVal == "" {
 		err = errors.BadRequest(fmt.Sprintf("找不到 %s 字段.", VerifyRespKey))

@@ -19,8 +19,8 @@ type CustomError struct {
 	StatusCode int    `json:"status_code"`
 }
 
-func (ge *CustomError) Error() string {
-	b, _ := json.Marshal(ge)
+func (e *CustomError) Error() string {
+	b, _ := json.Marshal(e)
 	return string(b)
 }
 
@@ -60,5 +60,12 @@ func JsonUnmarshalError(err error) error {
 	return &CustomError{
 		StatusCode: http.StatusBadRequest,
 		Message:    fmt.Sprintf("json 解析失败: %+v", err),
+	}
+}
+
+func JsonMarshalError(err error) error {
+	return &CustomError{
+		StatusCode: http.StatusBadRequest,
+		Message:    fmt.Sprintf("转换到 json 失败: %+v", err),
 	}
 }

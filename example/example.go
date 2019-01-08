@@ -1,15 +1,17 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
-	"github.com/wq1019/captcha"
+	"github.com/wq1019/re-captcha-go"
+	"github.com/wq1019/re-captcha-go/errors"
 	"log"
 	"net/http"
 )
 
 var (
 	sitekey   = "6LfR8YcUAAAAAK-QLovv4b8X40J-1oee_AtoNNSS"
-	secretKey = "6LfR8YcUAAAAAOpQkKTJhFdq6eEZJhkFN0hxNoGQ"
+	secretKey = "6LfR8YcUAAAAAOpQkKTJhFdq6eEZJhkFN0hxNoGQ1"
 )
 
 func showHandler(w http.ResponseWriter, r *http.Request) {
@@ -20,23 +22,33 @@ func showHandler(w http.ResponseWriter, r *http.Request) {
 		<meta charset="UTF-8">
 		<title>Document</title>
 		<script src='https://www.google.com/recaptcha/api.js?render=%s'></script>
+		<script src='https://cdn.bootcss.com/jquery/1.12.0/jquery.min.js'></script>
 		<script>
         	grecaptcha.ready(function () {
-            	grecaptcha.execute('%s', {action: 'home'}).then(function (token) {
+            	grecaptcha.execute('%s', {action: 'homepage'}).then(function (token) {
                     // Verify the token on the server.
-                   	document.getElementById("response").value = token
+					$.ajax({
+                    	url: "/verify",
+                    	data: {
+                        	"%s": token
+                    	},
+                   		type: "POST",
+                    	success: function (res) {
+                     	   console.log(res);
+                    	},
+						error: function (res) {
+							alert(res);
+						}
+                	});
             	});
 			});
 		</script>
 	</head>
 	<body>
-		<form action="/verify" method="post">
-			<input id="response" type="hidden" name="%s" value="">
-			<input type="submit" value="提交">
-		</form>
+		<h1 style="text-align:center;margin-top:30px;">Google reCaptcha test</h1>
 	</body>
 	</html>
-`, sitekey, sitekey, captcha.VerifyRespKey)
+`, sitekey, sitekey, re_captcha_go.VerifyRespKey)
 
 	// 输出 html 到 ResponseWriter
 	_, err := w.Write([]byte(html))
@@ -46,16 +58,24 @@ func showHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func verifyHandler(w http.ResponseWriter, r *http.Request) {
-	reCaptcha := captcha.NewReCaptcha(sitekey, secretKey)
-	isPass, err := reCaptcha.Verify(r)
+	reCaptcha := re_captcha_go.NewReCaptcha(sitekey, secretKey)
+	isOk, err := reCaptcha.Verify(r)
 	if err != nil {
 		_, _ = w.Write([]byte(err.Error()))
 		return
 	}
-	if isPass == false {
+	if isOk == false {
 		_, _ = w.Write([]byte("no"))
 	}
-	_, _ = w.Write([]byte("ok"))
+	data := map[string]interface{}{
+		"success": isOk,
+	}
+	resp, err := json.Marshal(data)
+	if err != nil {
+		_, _ = w.Write([]byte(errors.JsonMarshalError(err).Error()))
+		return
+	}
+	_, _ = w.Write(resp)
 }
 
 func main() {
