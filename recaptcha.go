@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	RequestTimeout = time.Second * 10
-	VerifyRespKey  = "g-recaptcha-response"
+	requestTimeout = time.Second * 10
+	verifyRespKey  = "g-recaptcha-response"
 	reCaptchaApi   = "https://www.google.com/recaptcha/api/siteverify"
 )
 
@@ -35,16 +35,16 @@ type reCaptchaResponse struct {
 func (r *reCaptcha) Verify(request *http.Request) (bool, error) {
 	var (
 		err           error
-		verifyRespVal = request.FormValue(VerifyRespKey)
+		verifyRespVal = request.FormValue(verifyRespKey)
 	)
-	// 判断前端有没有传 VerifyRespKey
+	// 判断前端有没有传 verifyRespKey
 	if verifyRespVal == "" {
-		err = errors.BadRequest(fmt.Sprintf("找不到 %s 字段.", VerifyRespKey))
+		err = errors.BadRequest(fmt.Sprintf("找不到 %s 字段.", verifyRespKey))
 		return false, err
 	}
 	// 请求 api
 	client := &http.Client{
-		Timeout: RequestTimeout,
+		Timeout: requestTimeout,
 	}
 	resp, err := client.PostForm(reCaptchaApi, url.Values{
 		"secret":   {r.SecretKey},

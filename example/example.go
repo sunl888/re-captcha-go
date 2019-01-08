@@ -30,7 +30,7 @@ func showHandler(w http.ResponseWriter, r *http.Request) {
 					$.ajax({
                     	url: "/verify",
                     	data: {
-                        	"%s": token
+                        	"g-recaptcha-response": token
                     	},
                    		type: "POST",
                     	success: function (res) {
@@ -48,7 +48,7 @@ func showHandler(w http.ResponseWriter, r *http.Request) {
 		<h1 style="text-align:center;margin-top:30px;">Google reCaptcha test</h1>
 	</body>
 	</html>
-`, sitekey, sitekey, re_captcha_go.VerifyRespKey)
+`, sitekey, sitekey)
 
 	// 输出 html 到 ResponseWriter
 	_, err := w.Write([]byte(html))
