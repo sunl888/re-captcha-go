@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/wq1019/re-captcha-go"
-	"github.com/wq1019/re-captcha-go/errors"
 	"log"
 	"net/http"
 )
@@ -72,7 +71,7 @@ func verifyHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	resp, err := json.Marshal(data)
 	if err != nil {
-		_, _ = w.Write([]byte(errors.JsonMarshalError(err).Error()))
+		_, _ = w.Write([]byte(re_captcha_go.JsonMarshalError(err).Error()))
 		return
 	}
 	_, _ = w.Write(resp)

@@ -1,4 +1,4 @@
-package errors
+package re_captcha_go
 
 import (
 	"encoding/json"
