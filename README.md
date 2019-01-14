@@ -1,4 +1,4 @@
-# Google reCaptcha package for golang
+# Google reCaptcha v3 package for golang
 
 ## Intro
 `reCaptcha v3` 使网站所有者更简单有效的清除机器人所产生的有害流量，甚至不需要访问者证明他们是人类。这一变化使网站访问者更容易登录他们喜爱的网站，而不会浪费时间通过解决一个谜题或者识别一张图片来证明他们是真正的人。
